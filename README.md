@@ -11,7 +11,7 @@ __ToC:__
 + [Issues](#issues)
 
 # Requirements
-To use Otto, only need is Python3 and Git. Probably that they are already installed them yet, but if they don't:
+To use Otto, only need is Python3 and Git. Probably they are already installed on your OS yet, but if they don't:
 
 ```bash
 sudo apt update && sudo apt upgrade -y
