@@ -11,6 +11,7 @@ import sys
 # Basics
 NUMBERS_DICTIONARY = '0123456789'
 SPECIAL_CHARS_DICTIONARY = '.+-*/\\|°¬!"#$&/()=?¡¨*[]{}´+,.;:-_<>@'
+WHITE_SPACE = ' '
 CHARS_DICTIONARY = 'abcdefghijklmnñopqrstuvwxyz'
 DEFAULT_KEYS_AMOUNT = 10
 DEFAULT_KEYS_LENGTH = 16
@@ -24,7 +25,7 @@ def binomial_coefficient(n: int, k: int) -> int:
     return round(n_fac/(k_fac*n_minus_k_fac))
 
 
-def _default_dictionary(use_uppercase=True, use_numbers=True, use_special_chars=True):
+def _default_dictionary(use_uppercase=True, use_numbers=True, use_special_chars=True, use_whitespaces=''):
     """
     Build a dictionary by default.
 
@@ -44,6 +45,7 @@ def _default_dictionary(use_uppercase=True, use_numbers=True, use_special_chars=
     _dict = CHARS_DICTIONARY
     _dict += CHARS_DICTIONARY.upper() if use_uppercase else ''
     _dict += NUMBERS_DICTIONARY if use_numbers else ''
+    _dict += WHITE_SPACE if use_whitespaces else ''
     _dict += SPECIAL_CHARS_DICTIONARY if use_special_chars else ''
     return _dict
 
@@ -99,7 +101,8 @@ def prepare_chars_dictionary(_dictionary_, **kwargs):
         # Build default dict
         _dictionary_ = _default_dictionary(use_numbers=kwargs.get('use_numbers', True),
                                            use_uppercase=kwargs.get('use_uppercase', True),
-                                           use_special_chars=kwargs.get('use_special_chars', False))
+                                           use_special_chars=kwargs.get('use_special_chars', False),
+                                           use_whitespaces=kwargs.get('use_whitespaces', False))
     else:
         if kwargs.get('use_uppercase') is True:
             _dictionary_ += _dictionary_.upper()
@@ -115,7 +118,9 @@ if __name__ == '__main__':
     parser.add_argument('--amount', '-a', help='Amount of keys.', default=DEFAULT_KEYS_AMOUNT, type=str)
     parser.add_argument('--length', '-l', help='Keys length', default=DEFAULT_KEYS_LENGTH, type=int)
     parser.add_argument('--uppercase', '-u', help='Use upper case', action='store_true')
-    parser.add_argument('--numbers', '-n', help='Use add to dictionary numbers chars.', action='store_true')
+    parser.add_argument('--numbers', '-n', help='Add numbers to dictionary.', action='store_true')
+    parser.add_argument('--symbols', '-s', help='Add special chars to dictionary.', action='store_true')
+    parser.add_argument('--whitespace', '-w', help='Add White spaces to dictionary.', action='store_true')
     parser.add_argument('--randomize', '-r', action='store_true', default=False,
                         help='Generation method, if -r or --randomize is present'
                              'random generation selected else, permutations method selected.')
@@ -128,11 +133,15 @@ if __name__ == '__main__':
     _numbers = arguments.numbers
     _amount = int(arguments.amount)
     _length = int(arguments.length)
+    _special = arguments.symbols
+    _space = arguments.whitespace
 
-    # Pepare Chars Dictionary
+    # Prepare Chars Dictionary
     dictionary = prepare_chars_dictionary(_dictionary_=_dictionary,
                                           use_uppercase=_uppercase,
-                                          use_numbers=_numbers)
+                                          use_numbers=_numbers,
+                                          use_special_chars=_special,
+                                          use_whitespaces=_space)
     method = 'randomize' if arguments.randomize else 'combinations'
     try:
         if int(_amount) > binomial_coefficient(len(dictionary), _length):
