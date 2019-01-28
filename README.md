@@ -19,7 +19,7 @@ sudo apt install -y git python3-dev  build-essential libssl-dev libffi-dev pytho
 ```
 
 # Installation
-Cause is pure python3 script and also it is built around builtins python3 libraries, install it is very easy and simple.
+Because is pure python3 script and also it is built around builtins python3 libraries, install it is very easy and simple.
 
 ```bash 
 # Clone repository
