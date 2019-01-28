@@ -10,7 +10,12 @@ ToC
 [Issues](#issues)
 
 # Requirements
+To use Otto, only need is Python3 and Git. It is probable that you has already installed yet, but if you don't:
 
+```bash
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y git python3-dev  build-essential libssl-dev libffi-dev python-dev
+```
 
 # Installation
 Cause is pure python3 script and also it is built around builtins python3 libraries, install it is very easy and simple.
