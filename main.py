@@ -31,54 +31,6 @@ def _default_dictionary(use_uppercase=True, use_numbers=True, use_special_chars=
     return _dict
 
 
-# Scrip arguments
-script_arguments = [
-    {
-        'flag': '--dictionary,-d',
-        'help': 'Dictionary elements.',
-        'default': 'undefined',
-        'action': '',
-        'type': str
-    },
-    {
-        'flag': '--amount,-a',
-        'help': 'Amount of records.',
-        'default': DEFAULT_RECORDS_AMOUNT,
-        'action': '',
-        'type': int
-    },
-    {
-        'flag': '--length,-l',
-        'help': 'Records length.',
-        'default': DEFAULT_RECORDS_LENGTH,
-        'action': '',
-        'type': int
-    },
-    {
-        'flag': '--randomize,-r',
-        'help': 'Generation method, if -r or --randomize is present,'
-                'random generation selected else, permutations method selected.',
-        'default': None,
-        'type': bool,
-        'action': 'store_true'
-    },
-    {
-        'flag': '--uppercase,-u',
-        'help': 'Use upper case.',
-        'default': None,
-        'action': 'store_true',
-        'type': bool
-    },
-    {
-        'flag': '--numbers,-n',
-        'help': 'Use add to dictionary numbers chars.',
-        'default': None,
-        'action': 'store_true',
-        'type': bool
-    }
-]
-
-
 def generate_by_random(**kwargs):
     """Generates key randomly"""
 
@@ -98,7 +50,8 @@ def generate_by_random(**kwargs):
             if nk not in generated_keys:
                 generated_keys.append(nk)
                 break
-    return generated_keys
+    for key in generated_keys:
+        sys.stdout.write(f'{key}\n')
 
 
 def generate_by_combinations(**kwargs):
@@ -109,8 +62,10 @@ def generate_by_combinations(**kwargs):
     if any(x is None for x in [_dictionary, _length, _amount]):
         raise KeyError('Combination Dict generator: missing required argument.')
 
-    generated_key = list(combinations(_dictionary, _length))
-    return [''.join(generated_key[i]) for i in range(_amount-1)]
+    for idx, key in enumerate(combinations(_dictionary, _length)):
+        if idx > _amount:
+            break
+        sys.stdout.write(''.join(list(key)) + '\n')
 
 
 RECORD_GENERATION_METHODS = {
@@ -141,12 +96,15 @@ if __name__ == '__main__':
     """Main"""
     parser = argparse.ArgumentParser(description="Char dictionary generator", allow_abbrev=True)
     # KeyGen Ags
-    for args in script_arguments:
-        # add scripts arguments
-        parser.add_argument(*args.get('flag').split(','),
-                            help=args.get('help'),
-                            type=args.get('type'),
-                            default=args.get('default'))
+    parser.add_argument('--dictionary', '-d', help='Dictionary elements.', default='undefined', type=str)
+    parser.add_argument('--amount', '-a', help='Amount of keys.', default=DEFAULT_RECORDS_AMOUNT, type=str)
+    parser.add_argument('--length', '-l', help='Keys length', default=DEFAULT_RECORDS_LENGTH, type=int)
+    parser.add_argument('--uppercase', '-u', help='Use upper case', action='store_true')
+    parser.add_argument('--numbers', '-n', help='Use add to dictionary numbers chars.', action='store_true')
+    parser.add_argument('--randomize', '-r', action='store_true',
+                        help='Generation method, if -r or --randomize is present'
+                             'random generation selected else, permutations method selected.')
+
     arguments = parser.parse_args()
     dictionary = prepare_chars_dictionary(_dictionary=arguments.dictionary,
                                           use_uppercase=arguments.uppercase,
@@ -155,11 +113,7 @@ if __name__ == '__main__':
     try:
         if arguments.amount > binomial_coefficient(len(dictionary), arguments.length):
             raise IndexError(f'With provided dictionary it is impossible generate {arguments.amount} keys.')
-        records = RECORD_GENERATION_METHODS[method](dictionary=dictionary,
-                                                    length=arguments.length,
-                                                    amount=arguments.amount)
-        for record in records:
-            sys.stdout.write(f'{record}\n')
+        RECORD_GENERATION_METHODS[method](dictionary=dictionary, length=arguments.length, amount=arguments.amount)
     except MemoryError:
         print('You do not have enough memory for do this table.')
     except ValueError:
