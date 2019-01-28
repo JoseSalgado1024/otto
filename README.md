@@ -5,10 +5,10 @@ This project is a few hours python 3 experiment. I try to build a keygen option 
 
 __ToC:__
 
-[Requirements](#requirements)
-[Installation](#installation)
-[Usage](#usage)
-[Issues](#issues)
++ [Requirements](#requirements)
++ [Installation](#installation)
++ [Usage](#usage)
++ [Issues](#issues)
 
 # Requirements
 To use Otto, only need is Python3 and Git. It is probable that you has already installed yet, but if you don't:
