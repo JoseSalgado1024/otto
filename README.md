@@ -31,7 +31,7 @@ Demo:
 
     python otto/main.py --randomize --uppercase --whitespace
 
-**Output**
+__Output__
 
     KZWtvjCyaDdKBeGl
     Yjw RFgbhcWptCo 
@@ -44,7 +44,7 @@ Demo:
     HnÑHFPrxUcEsogBA
     PxaVWNDgvFañd WÑ
 
-Arguments:
+__Arguments__:
 
 + `-r` | `--randomize`: Random Method. If randomize flag is not present, Combinations method 'll be selected. 
 + `-d` | `--dictionary`: Custom dictionary. By default `aabcdefghijklmnñopqrstuvwxyz`.
