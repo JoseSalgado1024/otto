@@ -3,7 +3,8 @@ Otto
 
 This project is a few hours python 3 experiment. I try to build a keygen option to be used with aircrack.
 
-ToC
+__ToC:__
+
 [Requirements](#requirements)
 [Installation](#installation)
 [Usage](#usage)
